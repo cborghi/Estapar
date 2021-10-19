@@ -1,0 +1,7 @@
+SELECT [MNB_ID]
+      ,[MNB_NOME]
+      ,[MNB_CPF]
+      ,[MNB_NASCIMENTO]
+      ,[MNB_ATIVO]
+  FROM [dbo].[MANOBRISTA_MNB]
+WHERE [MNB_ATIVO] = 1

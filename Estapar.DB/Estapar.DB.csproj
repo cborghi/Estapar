@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Remove="Scripts\DeleteCarros.sql" />
+		<None Remove="Scripts\DeleteManobristas.sql" />
+		<None Remove="Scripts\InsertCarros.sql" />
+		<None Remove="Scripts\InsertManobristas.sql" />
+		<None Remove="Scripts\SelectCarros.sql" />
+		<None Remove="Scripts\SelectCarrosById.sql" />
+		<None Remove="Scripts\SelectManobristasById.sql" />
+		<None Remove="Scripts\SelectMovimentacoes.sql" />
+		<None Remove="Scripts\UpdateCarros.sql" />
+		<None Remove="Scripts\UpdateManobristas.sql" />
+		<None Remove="Scripts\UpdateMovimentacoes.sql" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Dapper.FluentMap" Version="2.0.0" />
+		<PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
+		<EmbeddedResource Include="Scripts\DeleteCarros.sql" />
+		<EmbeddedResource Include="Scripts\InsertCarros.sql" />
+		<EmbeddedResource Include="Scripts\SelectMovimentacoes.sql" />
+		<EmbeddedResource Include="Scripts\SelectCarros.sql" />
+		<EmbeddedResource Include="Scripts\SelectCarrosById.sql" />
+		<EmbeddedResource Include="Scripts\UpdateMovimentacoes.sql" />
+		<EmbeddedResource Include="Scripts\UpdateCarros.sql" />
+		<EmbeddedResource Include="Scripts\UpdateManobristas.sql" />
+		<EmbeddedResource Include="Scripts\DeleteManobristas.sql" />
+		<EmbeddedResource Include="Scripts\InsertManobristas.sql" />
+		<EmbeddedResource Include="Scripts\SelectManobristasById.sql" />
+		<EmbeddedResource Include="Scripts\SelectManobristas.sql" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Estapar.Interfaces\Estapar.Interfaces.csproj" />
+	</ItemGroup>
+
+</Project>

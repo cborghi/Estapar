@@ -1,0 +1,3 @@
+UPDATE [dbo].[CARRO_CRR]
+SET [CRR_ATIVO] = 0
+WHERE [CRR_ID] = @Id

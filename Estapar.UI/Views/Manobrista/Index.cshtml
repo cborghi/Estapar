@@ -1,0 +1,99 @@
+﻿@model IEnumerable<Estapar.Model.ViewModel.ManobristaViewModel>
+@{
+    ViewData["Title"] = "Estapar - Manobristas";
+    ViewBag.Title = "Estapar - Manobristas";
+}
+
+@section Styles {
+    <!-- DataTables css -->
+    <link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <!-- Responsive Datatable css -->
+    <link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        table, th, td {
+            border: 1px solid gray;
+            border-collapse: collapse;
+            padding: 5px 5px;
+        }
+    </style>
+}
+
+<div class="card m-b-30">
+    <div class="card-header">
+        <div class="col-12">
+            <div>
+                <a asp-action="InsertManobrista" class="btn btn-primary" style="float: right"><i class="feather-plus mr-2 right"></i>Adicionar Manobrista</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="dtManobristas" width="100%" class="report">
+                <tr id="trManobristas">
+                    <th id="Id" hidden>Id</th>
+                    <th id="Nome" width="40%">Nome</th>
+                    <th id="Cpf" width="20%">CPF</th>
+                    <th id="DataNascimento" width="20%">Data Nascimento</th>
+                    <th id="Acao" width="20%">Ações</th>
+                </tr>
+
+                @if (Model != null)
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td hidden>@item.MNB_ID</td>
+                            <td>@item.MNB_NOME</td>
+                            <td>@item.MNB_CPF</td>
+                            <td>@item.MNB_NASCIMENTO</td>
+                            <td>
+                                <button type="button" class="btn btn-info" onclick="editarManobrista('@item.MNB_ID')">Editar</button>
+                                <button type="button" class="btn btn-danger" onclick="showModal('@item.MNB_NOME', '@item.MNB_ID')">Excluir</button>
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalExcluirManobrista">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Fechar</span></button>
+                <h3 class="modal-title">Excluir</h3>
+            </div>
+            <div class="modal-body">
+                <p>Deseja realmente excluir o manobrista <label id="lblManobristaExcluirNome"></label></p>
+                @Html.Hidden("IdManobristaExcluir", "")
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Voltar</button>
+                <button type="button" class="btn btn-primary" onclick="excluirManobrista()">Excluir</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        function showModal(token1, token2) {
+            $("#lblManobristaExcluirNome").text(token1);
+            $('#IdManobristaExcluir').val(token2);
+            $('#modalExcluirManobrista').modal('show');
+        }
+
+        function editarManobrista(token) {
+            location.href = '/Manobrista/UpdateManobrista?id=' + token;
+        }
+
+        function excluirManobrista() {
+            var token = $('#IdManobristaExcluir').val();
+            location.href = '/Manobrista/DeleteManobrista?id=' + token;
+        }
+
+    </script>
+}

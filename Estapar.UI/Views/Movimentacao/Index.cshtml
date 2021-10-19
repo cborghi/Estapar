@@ -1,0 +1,107 @@
+﻿@model IEnumerable<Estapar.Model.ViewModel.MovimentacaoViewModel>
+@{
+    ViewData["Title"] = "Estapar - Movimentacão";
+    ViewBag.Title = "Estapar - Movimentacão";
+}
+
+@section Styles {
+    <!-- DataTables css -->
+    <link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <!-- Responsive Datatable css -->
+    <link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        table, th, td {
+            border: 1px solid gray;
+            border-collapse: collapse;
+            padding: 5px 5px;
+        }
+    </style>
+}
+
+<div class="card m-b-30">
+    <div class="card-header">
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="dtMovimentacaos" width="100%" class="report">
+                <tr id="trMovimentacaos">
+                    <th id="Id" hidden>Id</th>
+                    <th id="CarroId" hidden>CarroId</th>
+                    <th id="Placa" width="10%">Placa</th>
+                    <th id="ManobristaEntrada" width="25%">Manobrista Entrada</th>
+                    <th id="HoraEntrada" width="15%">Hora Entrada</th>
+                    <th id="ManobristaSaida" width="25%">Manobrista Saída</th>
+                    <th id="ManobristaSaida" width="15%">Hora Saída</th>
+                    <th id="Acao" width="10%">Ação</th>
+                </tr>
+
+                @if (Model != null)
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td hidden>@item.MVM_ID</td>
+                            <td hidden>@item.CRR_ID</td>
+                            <td>@item.CRR_PLACA</td>
+                            <td>@item.MNB_NOME_ENTRADA</td>
+                            <td>@item.MVM_DATA_ENTRADA</td>
+                            <td>@item.MNB_NOME_SAIDA</td>
+                            <td>@item.MVM_DATA_ENTREGA</td>
+                            <td>
+                                @if (@item.MNB_NOME_SAIDA == null)
+                                {
+                                    @if (item.MNB_ID_ENTRADA == null)
+                                    {
+                                        <button type="button" class="btn btn-info" onclick="showModal('@item.MVM_ID')">Inserir Entrada</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="btn btn-info" onclick="showModal('@item.MVM_ID')">Inserir Saida</button>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalMovimentacao">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Fechar</span></button>
+            </div>
+            <div class="modal-body">
+                @Html.Hidden("IdMovimentacao", "")
+                <p>
+                    Selecione o manobrista:  @Html.DropDownList("lstManobrista", (IEnumerable<SelectListItem>)ViewBag.Manobristas, new { style = "width: 250px;" })
+                </p>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Voltar</button>
+                <button type="button" class="btn btn-primary" onclick="editarMovimentacao()">Concluir</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        function showModal(token) {
+            $('#IdMovimentacao').val(token);
+            $('#modalMovimentacao').modal('show');
+        }
+
+        function editarMovimentacao() {
+            var token = $('#IdMovimentacao').val();
+            var token2 = $("#lstManobrista option:selected").val();
+            location.href = '/Movimentacao/UpdateMovimentacao?id=' + token + '&idManobrista=' + token2;
+        }
+
+    </script>
+}

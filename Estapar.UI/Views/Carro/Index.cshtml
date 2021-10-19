@@ -1,0 +1,99 @@
+﻿@model IEnumerable<Estapar.Model.ViewModel.CarroViewModel>
+@{
+    ViewData["Title"] = "Estapar - Carro";
+    ViewBag.Title = "Estapar - Carros";
+}
+
+@section Styles {
+    <!-- DataTables css -->
+    <link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <!-- Responsive Datatable css -->
+    <link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        table, th, td {
+            border: 1px solid gray;
+            border-collapse: collapse;
+            padding: 5px 5px;
+        }
+    </style>
+}
+
+<div class="card m-b-30">
+    <div class="card-header">
+        <div class="col-12">
+            <div>
+                <a asp-action="InsertCarro" class="btn btn-primary" style="float: right"><i class="feather-plus mr-2 right"></i>Adicionar Carros</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="dtCarros" width="100%" class="report">
+                <tr id="trCarros">
+                    <th id="Id" hidden>Id</th>
+                    <th id="Marca" width="30%">Marca</th>
+                    <th id="Modelo" width="30%">Modelo</th>
+                    <th id="Placa" width="20%">Placa</th>
+                    <th id="Acao" width="20%">Ações</th>
+                </tr>
+
+                @if (Model != null)
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td hidden>@item.CRR_ID</td>
+                            <td>@item.CRR_MARCA</td>
+                            <td>@item.CRR_MODELO</td>
+                            <td>@item.CRR_PLACA</td>
+                            <td>
+                                <button type="button" class="btn btn-info" onclick="editarCarro('@item.CRR_ID')">Editar</button>
+                                <button type="button" class="btn btn-danger" onclick="showModal('@item.CRR_PLACA', '@item.CRR_ID')">Excluir</button>
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalExcluirCarro">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Fechar</span></button>
+                <h3 class="modal-title">Excluir</h3>
+            </div>
+            <div class="modal-body">
+                <p>Deseja realmente excluir o carro com placa <label id="lblPlacaExcluirCarro"></label></p>
+                @Html.Hidden("IdCarroExcluir", "")
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Voltar</button>
+                <button type="button" class="btn btn-primary" onclick="excluirCarro()">Excluir</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        function showModal(token1, token2) {
+            $("#lblPlacaExcluirCarro").text(token1);
+            $('#IdCarroExcluir').val(token2);
+            $('#modalExcluirCarro').modal('show');
+        }
+
+        function editarCarro(token) {
+            location.href = '/Carro/UpdateCarro?id=' + token;
+        }
+
+        function excluirCarro() {
+            var token = $('#IdCarroExcluir').val();
+            location.href = '/Carro/DeleteCarro?id=' + token;
+        }
+
+    </script>
+}
